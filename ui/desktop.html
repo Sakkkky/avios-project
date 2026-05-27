@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AVIOS Desktop Environment</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Boot Sequence Animation -->
+    <div id="boot-sequence" class="boot-screen">
+        <div class="boot-content">
+            <div class="logo-container">
+                <svg class="avios-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#00ff88;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#00ccff;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <polygon points="100,20 180,60 180,140 100,180 20,140 20,60" 
+                             fill="none" stroke="url(#logoGrad)" stroke-width="3"/>
+                    <text x="100" y="110" font-family="Courier New" font-size="40" 
+                          fill="url(#logoGrad)" text-anchor="middle" font-weight="bold">AVI</text>
+                    <text x="100" y="135" font-family="Courier New" font-size="20" 
+                          fill="url(#logoGrad)" text-anchor="middle">OS</text>
+                </svg>
+            </div>
+            <div class="boot-text">
+                <p id="boot-message">Initializing AVIOS...</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="boot-progress"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Desktop -->
+    <div id="desktop" class="desktop hidden">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="top-bar-left">
+                <div class="logo-mini">
+                    <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="20,5 35,12 35,28 20,35 5,28 5,12" 
+                                 fill="none" stroke="#00ff88" stroke-width="2"/>
+                    </svg>
+                </div>
+                <span class="os-name">AVIOS</span>
+                <div class="quick-launchers">
+                    <button class="quick-launch" data-app="terminal" title="Terminal">
+                        <span class="icon">▶</span>
+                    </button>
+                    <button class="quick-launch" data-app="browser" title="Browser">
+                        <span class="icon">⊞</span>
+                    </button>
+                    <button class="quick-launch" data-app="files" title="Files">
+                        <span class="icon">▣</span>
+                    </button>
+                </div>
+            </div>
+            <div class="top-bar-center">
+                <div class="active-window-title" id="active-title">Desktop</div>
+            </div>
+            <div class="top-bar-right">
+                <div class="system-stats">
+                    <span class="stat">CPU: <span id="cpu-usage">0%</span></span>
+                    <span class="stat">RAM: <span id="ram-usage">0%</span></span>
+                    <span class="stat">NET: <span id="net-usage">0 KB/s</span></span>
+                </div>
+                <div class="clock" id="clock">00:00:00</div>
+                <button class="power-btn" id="power-menu">⏻</button>
+            </div>
+        </div>
+
+        <!-- Desktop Grid -->
+        <div class="desktop-content">
+            <!-- App Launcher Panel -->
+            <div class="launcher-panel">
+                <div class="panel-header">
+                    <h3>SECURITY TOOLS</h3>
+                </div>
+                <div class="tool-grid">
+                    <div class="tool-card" data-tool="nmap">
+                        <div class="tool-icon">🔍</div>
+                        <div class="tool-name">Nmap</div>
+                        <div class="tool-desc">Network Scanner</div>
+                    </div>
+                    <div class="tool-card" data-tool="metasploit">
+                        <div class="tool-icon">💥</div>
+                        <div class="tool-name">Metasploit</div>
+                        <div class="tool-desc">Exploit Framework</div>
+                    </div>
+                    <div class="tool-card" data-tool="wireshark">
+                        <div class="tool-icon">📡</div>
+                        <div class="tool-name">Wireshark</div>
+                        <div class="tool-desc">Packet Analyzer</div>
+                    </div>
+                    <div class="tool-card" data-tool="burpsuite">
+                        <div class="tool-icon">🔐</div>
+                        <div class="tool-name">Burp Suite</div>
+                        <div class="tool-desc">Web App Tester</div>
+                    </div>
+                    <div class="tool-card" data-tool="john">
+                        <div class="tool-icon">🔓</div>
+                        <div class="tool-name">John</div>
+                        <div class="tool-desc">Password Cracker</div>
+                    </div>
+                    <div class="tool-card" data-tool="sqlmap">
+                        <div class="tool-icon">💉</div>
+                        <div class="tool-name">SQLMap</div>
+                        <div class="tool-desc">SQL Injection</div>
+                    </div>
+                    <div class="tool-card" data-tool="aircrack">
+                        <div class="tool-icon">📶</div>
+                        <div class="tool-name">Aircrack-ng</div>
+                        <div class="tool-desc">WiFi Security</div>
+                    </div>
+                    <div class="tool-card" data-tool="hashcat">
+                        <div class="tool-icon">⚡</div>
+                        <div class="tool-name">Hashcat</div>
+                        <div class="tool-desc">Hash Cracker</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Windows Container -->
+            <div class="windows-container" id="windows-container">
+                <!-- Windows will be dynamically added here -->
+            </div>
+
+            <!-- Network Visualizer -->
+            <div class="network-viz" id="network-viz">
+                <canvas id="network-canvas"></canvas>
+            </div>
+        </div>
+
+        <!-- Dock -->
+        <div class="dock">
+            <div class="dock-items">
+                <button class="dock-item active" data-app="launcher">
+                    <span class="dock-icon">◈</span>
+                    <span class="dock-label">Launcher</span>
+                </button>
+                <button class="dock-item" data-app="terminal">
+                    <span class="dock-icon">▶</span>
+                    <span class="dock-label">Terminal</span>
+                </button>
+                <button class="dock-item" data-app="network">
+                    <span class="dock-icon">◉</span>
+                    <span class="dock-label">Network</span>
+                </button>
+                <button class="dock-item" data-app="monitor">
+                    <span class="dock-icon">◐</span>
+                    <span class="dock-label">Monitor</span>
+                </button>
+                <button class="dock-item" data-app="files">
+                    <span class="dock-icon">▣</span>
+                    <span class="dock-label">Files</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Terminal Template -->
+    <template id="terminal-template">
+        <div class="window terminal-window" data-window-id="">
+            <div class="window-header">
+                <div class="window-title">
+                    <span class="window-icon">▶</span>
+                    <span class="window-title-text">Terminal</span>
+                </div>
+                <div class="window-controls">
+                    <button class="window-btn minimize">─</button>
+                    <button class="window-btn maximize">□</button>
+                    <button class="window-btn close">×</button>
+                </div>
+            </div>
+            <div class="window-content">
+                <div class="terminal">
+                    <div class="terminal-output" id="terminal-output"></div>
+                    <div class="terminal-input-line">
+                        <span class="prompt">root@avios:~#</span>
+                        <input type="text" class="terminal-input" id="terminal-input" autocomplete="off" spellcheck="false">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <script src="desktop.js"></script>
+</body>
+</html>

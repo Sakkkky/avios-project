@@ -1,0 +1,18 @@
+# Build artifacts
+iso-build/
+rootfs/
+*.iso
+*.qcow2
+*.img
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+
+# Build logs
+*.log
